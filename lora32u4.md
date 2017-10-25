@@ -1,16 +1,11 @@
 <!-- TOC -->
 
 - [Workshop: Build a TTN LoRaWAN Node](#workshop-build-a-ttn-lorawan-node)
-    - [Component list](#component-list)
-- [Hardware: Getting started](#hardware-getting-started)
-    - [Mounting the RFM95](#mounting-the-rfm95)
-    - [Mounting the Arduino Pro Micro](#mounting-the-arduino-pro-micro)
-    - [Mount the antenna](#mount-the-antenna)
-        - [Option 1: SMA](#option-1-sma)
-        - [Option 2: Wire antenna](#option-2-wire-antenna)
-    - [The Finished Node](#the-finished-node)
+    - [Hardware](#hardware)
+    - [Adding the antenna and/or headers](#adding-the-antenna-andor-headers)
+    - [Connecting DIO1 to D6](#connecting-dio1-to-d6)
 - [Software: Getting started](#software-getting-started)
-    - [Adding the Arduino Pro Micro](#adding-the-arduino-pro-micro)
+    - [Adding the LORA32U4](#adding-the-lora32u4)
     - [Selecting the correct board](#selecting-the-correct-board)
     - [Get the LMIC library](#get-the-lmic-library)
     - [Get the low power library](#get-the-low-power-library)
@@ -20,76 +15,35 @@
     - [Adding a node](#adding-a-node)
 - [Creating the Arduino sketch](#creating-the-arduino-sketch)
     - [Check the console for output](#check-the-console-for-output)
-- [Low power operation](#low-power-operation)
 
 <!-- /TOC -->
 
 # Workshop: Build a TTN LoRaWAN Node
 
-In this workshop we will build a LoRaWAN node to be used with The Things Network based on an Arduino Pro Micro and RFM95 module. The node software used is LMIC.
+In this workshop we will use a prebuild LoRaWAN node to be used with The Things Network based on an Arduino Pro Micro and RFM95 module. The node software used is LMIC.
 
-![component picture](images/components.jpg)
+## Hardware
 
-## Component list
+The hardware used for this workshop is the LORA32U4 module.
 
-1. Arduino Pro Micro 3.3V/8MHz. N.B. 5V/16MHz will not work and damage the other components.
-1. RFM Module RFM95.
-1. PCB 'DougLarue'.
-1. Copper coil antenna (alternative 2dBi SMA antenna and SMA connector at additional cost).
-1. 1 LED.
+## Adding the antenna and/or headers
 
-# Hardware: Getting started
+Upon delivery the module has no antenna connected. There are two options, connect an antenna using the u.FL connector on the bottom of the module or solder a wire antenna to the hole marked "ANT'. An wire is included, a u.FL to SMA pigtail and SMA antenna are optional components.
 
-The first steps will be assembling the components by soldering the RFM95 module and Arduino Pro Micro onto the PCB.
+For breadboard use two rows of headers can added to the module.
 
-## Mounting the RFM95
+## Connecting DIO1 to D6
 
-Position the RFM95 module on the PCB as shown in the picture below.
-
-![rfm95 placement](images/rfm95-placement.jpg)
-
-Solder it to the PCB. The easiest way to do this is to solder one corner (make sure to position the module correctly!), next solder the opposite corner to fix the module and finish by soldering the other contacts.
-
-## Mounting the Arduino Pro Micro
-
-First solder the two 12 pin headers to the Arduino Micro Pro module. Use the short metal side of the connector for the Arduino. Next plug the Arduino Pro Micro with connectors into the 'ProMini' footprint. 
-
-NOTE: We will not be using the two pin connector inside the right (as shown on the pictures) connector, this is for Arduino Pro Mini only to bring out the I2C pins. The I2C pins for the Arduino Pro Micro are available on D2 (SDA) and pin D3 (SCL). If you want to use the I2C connector at the edge of the PCB you can connect a wire (on the reverse side of the PCB from D2 and D3 to the two holes, make sure to cross the wires so wire D2 which is the top pin to the bottom hole and vice versa.) Keep in mind any connector at that location will adversely affect a wire/coil antenna mounted next to it!
-
-![pro placement](images/pro-placement.jpg)
-
-## Mount the antenna
-
-Included in the kit is a coil antenna. This antenna will work for short distances. There are two options for better antenna
-
-1. Mount a SMA connector and use it to mount a 'stick' antenna.
-1. Use a wire antenna.
-
-### Option 1: SMA
-
-Mounting the SMA antenna using a SMA edge connector should not pose any challenges, slide it onto the three strips next to the RFM95 module with the center pin on top of the PCB. Keep in mind the SMA connector will get **very** hot when soldering it!
-
-### Option 2: Wire antenna
-
-A wire antenna is lowest cost solution which works surprisingly well. To create one, cut a piece of wire at about 10cm. Now strip about 5mm, tin it (for stranded wire) and solder it to the PCB using the hole next to the three strips at the PCB edge next to the RFM95 module.
-Now trim the wire above the PCB to 82.2mm.
-
-## The Finished Node
-
-The picture below shows the finished node.
-
-![finished node](images/finished.jpg)
-
-Additional headers can be mounted at the remaining footprints as required. See the note at 'Mounting the Arduino Pro Micro' concerning the I2C header.
+For the LoRaWAN stack to work two pins on the need to be wired together. Pin DIO1 (at the end of the large connector) needs to be connected to D6 (on the smaller connector).
 
 # Software: Getting started
 
 Start by downloading and installing the [Arduino IDE](https://www.arduino.cc/en/Main/Software). Once installed, start the IDE.
 
-## Adding the Arduino Pro Micro
+## Adding the LORA32U4
 
-The Pro Micro boards have not been developed by Arduino. As a result the boards are not available in a newly installed IDE. To add the boards to the IDE open 'Preferences' from the 'File' menu.
-In the 'Additional Boards Manager URL' enter 'https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json', Close the dialog with 'OK'.
+The LORA32U4 board has not been developed by Arduino. As a result the boards are not available in a newly installed IDE. To add the boards to the IDE open 'Preferences' from the 'File' menu.
+In the 'Additional Boards Manager URL' enter 'https://adafruit.github.io/arduino-board-index/package_adafruit_index.json', Close the dialog with 'OK'.
 
 ![preferences](images/preferences.png)
 
@@ -97,22 +51,15 @@ Now go to the 'Tools' menu, item 'Board: "Arduino/Genuino Uno"', this will open 
 
 ![boards](images/board-menu.png)
 
-In the boards manager, type 'sparkfun' in the dialog to show all SparkFun provided board packages. Click on 'SparkFun AVR Boards' to select the package and click 'Install' to install the board definitions on your system.
+In the boards manager, type 'Adafruit' in the dialog to show all SparkFun provided board packages. Click on 'Adafruit AVR Boards' to select the package and click 'Install' to install the board definitions on your system.
 
-![boards manager](images/sparkfun.png)
+![boards manager](images/adafruit.png)
 
 ## Selecting the correct board
 
-Open the 'Tools' menu and go to the 'Board: "Arduino/Genuino Uno"' again. Now select 'SparkFun Pro Micro' from the list.
+Open the 'Tools' menu and go to the 'Board: "Arduino/Genuino Uno"' again. Now select 'Adafruit Feather 32u4' from the list.
 
-![pro micro](images/pro-micro.png)
-
-**NOTE:** the next step is **very** important. Not selecting the correct processor will disable the USB boot loader making it impossible to update the code after the first upload.
-Open the 'Tools' menu again, at 'Processor' select "ATmega32u4 (3.3V, 8MHz)."
-
-![pro micro 3.3v](images/pro-micro-3v3.png)
-
-**NOTE: MAKE SURE you have selected the correct board!!**
+![pro micro](images/feather.png)
 
 ## Get the LMIC library
 
@@ -204,7 +151,7 @@ Keep this page open, we will need some of the information during the next steps.
 
 Everything is now in place to start coding our first Arduino sketch to connect our hardware to TTN.
 
-Download the sample sketch from [https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch/pro-micro-sketch.ino](https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch/pro-micro-sketch.ino) or cut-and-paste the code below:
+Download the sample sketch from [https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch.ino](https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch.ino) or cut-and-paste the code below:
 ```
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
@@ -288,10 +235,11 @@ static osjob_t initjob;
 // Pin mapping is hardware specific.
 // Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = 10, //8,
-    .rxtx = LMIC_UNUSED_PIN,
-    .rst = 0, //9,
-    .dio = {4, 5, 7},//{2,5, LMIC_UNUSED_PIN}, //DIO0 and DIO1 connected
+  .nss = 8,
+  .rxtx = LMIC_UNUSED_PIN,
+  .rst = 1, // Needed on RFM92/RFM95? (probably not) D0/GPIO16
+  .dio = {7, 6, LMIC_UNUSED_PIN}, // Specify pin numbers for DIO0, 1, 2
+// connected to D7, D6, -
 };
 
 
@@ -463,11 +411,9 @@ Now copy the three values to your sketch. Use the 'notepad' icon at the end of t
 
 Save the result and compile the sketch by hitting the check mark icon below 'File'. If no error are shown connect your node to your system using an USB mini cable. A red LED should light indicating the module is powered.
 
-Wait a few seconds for the system to install the appropriate USB drivers. Next go to 'Tool', 'Port' in the Arduino IDE and select the port your Pro Micro is connected to.
+Wait a few seconds for the system to install the appropriate USB drivers. Next go to 'Tool', 'Port' in the Arduino IDE and select the port your LORA32U4 is connected to.
 
-![select port](images/port.png)
-
-**NOTE:** At this point you should double check the Board and Processor settings are (still) correct. Board should be 'SparkFun Pro Micro' and processor 'ATmega32U4 (3.3V, 8MHz)'. Correct the values if required!
+![select port](images/feather-port.png)
 
 Now send the sketch to the board using the arrow icon below 'Edit'. Once the upload is finished open the 'Serial monitor' from the 'Tools' menu. After a few seconds output should start to appear in the monitor.
 
@@ -479,6 +425,3 @@ In the web browser with the TTN console switch to the 'Data' tab. Data should st
 
 ![data](images/data.png)
 
-# Low power operation
-
-To reduce the amount of power used by the node you want to disable all LEDs as these use a relatively large amount of power. This means disabling/removing the power led on the Pro Mini module. Only attempt this if you are very comfortable with removal of SMD parts as it might damage the module beyond repair.
