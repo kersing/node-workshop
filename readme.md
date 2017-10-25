@@ -27,6 +27,7 @@
 # Workshop: Build a TTN LoRaWAN Node
 
 In this workshop we will build a LoRaWAN node to be used with The Things Network based on an Arduino Pro Micro and RFM95 module. The node software used is LMIC.
+
 ![component picture](images/components.jpg)
 
 ## Component list
@@ -44,7 +45,9 @@ The first steps will be assembling the components by soldering the RFM95 module 
 ## Mounting the RFM95
 
 Position the RFM95 module on the PCB as shown in the picture below.
+
 ![rfm95 placement](images/rfm95-placement.jpg)
+
 Solder it to the PCB. The easiest way to do this is to solder one corner (make sure to position the module correctly!), next solder the opposite corner to fix the module and finish by soldering the other contacts.
 
 ## Mounting the Arduino Pro Micro
@@ -74,6 +77,7 @@ Now trim the wire above the PCB to 82.2mm.
 ## The Finished Node
 
 The picture below shows the finished node.
+
 ![finished node](images/finished.jpg)
 
 Additional headers can be mounted at the remaining footprints as required. See the note at 'Mounting the Arduino Pro Micro' concerning the I2C header.
@@ -86,22 +90,28 @@ Start by downloading and installing the [Arduino IDE](https://www.arduino.cc/en/
 
 The Pro Micro boards have not been developed by Arduino. As a result the boards are not available in a newly installed IDE. To add the boards to the IDE open 'Preferences' from the 'File' menu.
 In the 'Additional Boards Manager URL' enter 'https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json', Close the dialog with 'OK'.
+
 ![preferences](images/preferences.png)
 
 Now go to the 'Tools' menu, item 'Board: "Arduino/Genuino Uno"', this will open a sub menu, select 'Board Manager' from this new menu.
+
 ![boards](images/board-menu.png)
 
 In the boards manager, type 'sparkfun' in the dialog to show all SparkFun provided board packages. Click on 'SparkFun AVR Boards' to select the package and click 'Install' to install the board definitions on your system.
+
 ![boards manager](images/sparkfun.png)
 
 ## Selecting the correct board
 
 Open the 'Tools' menu and go to the 'Board: "Arduino/Genuino Uno"' again. Now select 'SparkFun Pro Micro' from the list.
+
 ![pro micro](images/pro-micro.png)
 
 **NOTE:** the next step is **very** important. Not selecting the correct processor will disable the USB boot loader making it impossible to update the code after the first upload.
 Open the 'Tools' menu again, at 'Processor' select "ATmega32u4 (3.3V, 8MHz)."
+
 ![pro micro 3.3v](images/pro-micro-3v3.png)
+
 **NOTE: MAKE SURE you have selected the correct board!!**
 
 ## Get the LMIC library
@@ -112,9 +122,10 @@ If you search GitHub (or Google) for LMIC you will find numerous versions of the
 1. Goto [https://github.com/matthijskooijman/arduino-lmic](https://github.com/matthijskooijman/arduino-lmic)
 1. Choose 'Clone or download'
 1. Download ZIP (remember the location you save the file)
+
 ![download lmic](images/github-lmic.png)
 
-1. In the Arduino IDE select 'Sketch', 'Include Library' and select 'Add .ZIP library' in the sub menu.
+4. In the Arduino IDE select 'Sketch', 'Include Library' and select 'Add .ZIP library' in the sub menu.
 ![add zip](images/add-zip.png)
 
 1. Browse to the file you just downloaded and open it
@@ -133,6 +144,7 @@ If you search GitHub (or Google) for LMIC you will find numerous versions of the
 # Create a TTN account
 
 If you do not yet have a TTN account (not a forum account) this is the time to create one. Surf to [https://account.thethingsnetwork.org/users/login](https://account.thethingsnetwork.org/users/login) and click on Create an account
+
 ![account](images/account.png)
 
 Enter valid information in the form, **read** the "Term and Conditions" and "Privacy Policy" and if you agree with the policies, "Create account".
@@ -163,9 +175,11 @@ On the "add application" screen you will need to enter a number of values:
 - Handler registration : use 'ttn-handler-eu'.
 
 ![add application](images/add-application.png)
+
 Click on the "Add Application" button to create the application.
 
 If you enter an application ID that is already in use an error will appear when you try to add it.
+
 ![not unique](images/not-unique.png)
 
 In that case choose a different ID and try again.
@@ -450,20 +464,20 @@ Now copy the three values to your sketch. Use the 'notepad' icon at the end of t
 Save the result and compile the sketch by hitting the check mark icon below 'File'. If no error are shown connect your node to your system using an USB mini cable. A red LED should light indicating the module is powered.
 
 Wait a few seconds for the system to install the appropriate USB drivers. Next go to 'Tool', 'Port' in the Arduino IDE and select the port your Pro Micro is connected to.
+
 ![select port](images/port.png)
 
 **NOTE:** At this point you should double check the Board and Processor settings are (still) correct. Board should be 'SparkFun Pro Micro' and processor 'ATmega32U4 (3.3V, 8MHz)'. Correct the values if required!
 
 Now send the sketch to the board using the arrow icon below 'Edit'. Once the upload is finished open the 'Serial monitor' from the 'Tools' menu. After a few seconds output should start to appear in the monitor.
+
 ![serial port monitor](images/serial-monitor.png)
 
 ## Check the console for output
 
 In the web browser with the TTN console switch to the 'Data' tab. Data should start to appear on this page once the node is up and running.
+
 ![data](images/data.png)
-
-
-
 
 # Low power operation
 
