@@ -151,7 +151,7 @@ Keep this page open, we will need some of the information during the next steps.
 
 Everything is now in place to start coding our first Arduino sketch to connect our hardware to TTN.
 
-Download the sample sketch from [https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch.ino](https://raw.githubusercontent.com/kersing/node-workshop/master/pro-micro-sketch.ino) or cut-and-paste the code below:
+Download the sample sketch from [https://raw.githubusercontent.com/kersing/node-workshop/master/lora32u4-sketch/lora32u4-sketch.ino](https://raw.githubusercontent.com/kersing/node-workshop/master/lora32u4-sketch/lora32u4-sketch.ino) or cut-and-paste the code below:
 ```
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
