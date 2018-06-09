@@ -38,6 +38,38 @@
 
 #include <Arduino.h>
 
+// DIO Pin mapping is hardware specific.
+// The unversioned board needs a wire bridge from pin DIO1 (at the end of the large connector) to D6 (on the smaller connector).
+// The v1.2 board needs the solder bridges connected, especially the DIO1 1 bridge.
+// Only docs for the unversioned board are available currently.
+// See: https://docs.bsfrance.fr/documentation/11355_LORA32U4II/Datasheet_LoRa32u4II_1.1.pdf
+//
+// Uncomment the define line below if you have a LoRa32u4II without a version number (v1.x)
+//#define LoRa32u4II_VERSION LoRa32u4II_1_1
+// Uncomment the define line below if you have a LoRa32u4II with version number (v1.2)
+//#define LoRa32u4II_VERSION LoRa32u4II_1_2
+
+#define LoRa32u4II_1_1 11
+#define LoRa32u4II_1_2 12
+
+#if LoRa32u4II_VERSION == LoRa32u4II_1_1
+    #define DIO0 7
+    #define DIO1 6
+    #define DIO2 LMIC_UNUSED_PIN
+    #define RESET_PIN  1
+#elif LoRa32u4II_VERSION == LoRa32u4II_1_2
+    #define DIO0 0
+    #define DIO1 1
+    #define DIO2 2
+    #define RESET_PIN 4
+#else
+    #define DIO0 0
+    #define DIO1 0
+    #define DIO2 0
+    #define RESET_PIN 0
+    #error "Please specify which LoRa32u4 II version you have by commenting out the specific define line at the top of the ino file that starts with #define LoRa32u4II_VERSION"
+#endif
+
 int sleepcycles = 7;  // every sleepcycle will last 8 secs, total sleeptime will be sleepcycles * 8 sec
 bool joined = false;
 bool sleeping = false;
@@ -77,15 +109,13 @@ void os_getDevKey (u1_t* buf) {
 static osjob_t sendjob;
 static osjob_t initjob;
 
-// Pin mapping is hardware specific.
-// Pin mapping
 const lmic_pinmap lmic_pins = {
-  .nss = 8,
-  .rxtx = LMIC_UNUSED_PIN,
-  .rst = 1, // Needed on RFM92/RFM95? (probably not) D0/GPIO16
-  .dio = {7, 6, LMIC_UNUSED_PIN}, // Specify pin numbers for DIO0, 1, 2
-// connected to D7, D6, -
+    .nss = 8,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = RESET_PIN, // Needed on RFM92/RFM95? (probably not) D0/GPIO16 on v1.1
+    .dio = {DIO0, DIO1, DIO2}, // Specify pin numbers for DIO0, DIO1, DIO2
 };
+
 
 void onEvent (ev_t ev) {
   int i,j;
@@ -239,4 +269,3 @@ void loop()
       digitalWrite(LedPin,((millis()/100) % 2) && (joined==false)); // only blinking when joining and not sleeping
 
 }
-
