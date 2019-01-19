@@ -58,9 +58,9 @@
     #define DIO2 LMIC_UNUSED_PIN
     #define RESET_PIN  1
 #elif LoRa32u4II_VERSION == LoRa32u4II_1_2
-    #define DIO0 0
+    #define DIO0 7
     #define DIO1 1
-    #define DIO2 2
+    #define DIO2 LMIC_UNUSED_PIN
     #define RESET_PIN 4
 #else
     #define DIO0 0
